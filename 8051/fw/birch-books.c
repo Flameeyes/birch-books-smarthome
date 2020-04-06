@@ -6,16 +6,7 @@
 
 #include <stdbool.h>
 
-__sfr __at(0x80) P0;
-__sfr __at(0xa0) P2;
-__sfr __at(0xb0) P3;
-
-__sfr __at(0x88) TCON;
-__sfr __at(0x89) TMOD;
-__sfr __at(0x8a) TL0;
-__sfr __at(0x8c) TH0;
-
-__sfr __at(0xa8) IE;
+#include <at89x52.h>
 
 volatile unsigned long int clocktime;
 volatile _Bool clockupdate;
