@@ -64,12 +64,24 @@ void main(void)
 
 	while (FF_PRESSED) {
 	  int clock_secs = clock() / 100000;
-	  if (clock_secs % 2) {
-	    P0 = 0x55;
-	    P2 = 0xAA & CFG_P2OUT;
+	  if (TEST_PRESSED) {
+	    int bit = clock_secs % 14;
+	    if (bit < 8) {
+	      P0 = 1 << bit;
+	      P2 = 0;
+	    } else {
+	      bit -= 8;
+	      P2 = 1 << bit;
+	      P0 = 0;
+	    }
 	  } else {
-	    P0 = 0xAA;
-	    P2 = 0x55 & CFG_P2OUT;
+	    if (clock_secs % 2) {
+	      P0 = 0x55;
+	      P2 = 0xAA & CFG_P2OUT;
+	    } else {
+	      P0 = 0xAA;
+	      P2 = 0x55 & CFG_P2OUT;
+	    }
 	  }
 	}
 
