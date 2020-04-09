@@ -1,8 +1,8 @@
 *~
-/8051/eagle-boards/*.b#*
-/8051/eagle-boards/*.pro
-/8051/eagle-boards/*.s#*
-/8051/eagle-boards/*~renumsch.scr
+/eagle-boards/**/*.b#*
+/eagle-boards/**/*.pro
+/eagle-boards/**/*.s#*
+/eagle-boards/**/*~renumsch.scr
 /8051/fw/*.asm
 /8051/fw/*.ihx
 /8051/fw/*.lk
