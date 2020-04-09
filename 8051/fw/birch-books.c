@@ -9,13 +9,30 @@
 #include <at89x52.h>
 
 volatile unsigned long int clocktime;
-volatile _Bool clockupdate;
+volatile bool clockupdate;
+
+volatile bool testmode = false;
+
+#define CFG_P0OUT 0xFF
+// Only 6 bits are configured for output on P2, the other two are inputs.
+#define CFG_P2OUT 0x3F
+
+#define CFG_P2TEST 0x80
+#define CFG_P2FF 0x40
+#define CFG_P2IN CFG_P2TEST | CFG_P2FF
+
+#define TEST_PRESSED (P2 & CFG_P2TEST)
+#define FF_PRESSED (P2 & CFG_P2FF)
 
 void clockinc(void) __interrupt(1)
 {
 	TH0 = (65536 - 922) / 256;
 	TL0 = (65536 - 922) % 256;
-	clocktime++;
+	if (FF_PRESSED) {
+	  clocktime += 1000;
+	} else {
+	  clocktime++;
+	}
 	clockupdate = true;
 }
 
@@ -45,16 +62,32 @@ void main(void)
 	P0 = 0x00;
 	P2 = 0x00;
 
+	while (FF_PRESSED) {
+	  int clock_secs = clock() / 100000;
+	  if (clock_secs % 2) {
+	    P0 = 0x55;
+	    P2 = 0xAA & CFG_P2OUT;
+	  } else {
+	    P0 = 0xAA;
+	    P2 = 0x55 & CFG_P2OUT;
+	  }
+	}
+
 	for(;;) {
 	  int clock_secs = clock() / 1000;
 
-	  /*
-	  if (P3 & 0x10) {
-	    P0 = ~0xFF;
-	    P2 = P2 & 0xEC;
-	  } else */ {
-	    P0 = (clock_secs) & 0xFF;
-	    P2 = (clock_secs >> 8) & 0xFF;
+	  if (TEST_PRESSED) {
+	    testmode = !testmode;
 	  }
+
+	  if (testmode) {
+	    P0 = CFG_P0OUT;
+	    P2 |= CFG_P2OUT;
+	  } else {
+	    P0 = (clock_secs) & CFG_P0OUT;
+	    P2 = (clock_secs >> 8) & CFG_P2OUT;
+	  }
+
+	  while (TEST_PRESSED);
 	}
 }
