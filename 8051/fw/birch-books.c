@@ -158,7 +158,7 @@ void main(void) {
         P0 = 0;
       }
     } else {
-      if (clock_secs % 2) {
+      if (clock_secs & 0x01) {
         P0 = 0x55;
         P2 = 0xAA & CFG_P2OUT;
       } else {
