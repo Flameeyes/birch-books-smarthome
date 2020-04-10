@@ -175,7 +175,7 @@ void main(void) {
 
     if (testmode) {
       P0 = CFG_P0OUT;
-      P2 |= CFG_P2OUT;
+      P2 = CFG_P2OUT;
     } else {
       /* The schedule is a 16 "hours" schedule with the two ports setting
        * separate environment.
