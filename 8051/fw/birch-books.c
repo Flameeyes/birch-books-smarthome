@@ -9,24 +9,24 @@
 
 #include <at89x52.h>
 
-
 /* We can't use C constants for all of this because SDCC is not able to tell
  * that they are static constants, and sets them in RAM instead.
  */
 
-/* The maximum value we care about for the tick clock is 57600 (expanded below), which
- * comes from the formula:
+/* The maximum value we care about for the tick clock is 57600 (expanded below),
+ * which comes from the formula:
  *
  *    (ticks / second) × (seconds / virtual_hour) × virtual hours
  *
- *         16          ×         180              ×      20        = 57600
+ *         16          ×         225              ×      16        = 57600
  *
- * And we want to force a rollover at that point, to avoid the counter overflow to just
- * mess up the schedule.
+ * And we want to force a rollover at that point, to avoid the counter overflow
+ * to just mess up the schedule.
  *
  * This has the added benefit of only needing 16-bit for the ticktime.
  */
 #define MAXTICK 57600
+#define VIRT_HOUR_SECONDS 225
 
 volatile uint16_t ticktime = 0;
 volatile bool fastclock = false;
@@ -50,18 +50,14 @@ volatile bool testmode = false;
 // P2 => [NC, NC, 9.1, 9.0, 8 7, 6.2, 6.1]
 // P0 => [6.0, 5, 4, 3, 2, 1.2, 1.1, 1.0]
 
-static const unsigned char schedule_p2[20] = {
-    0x08, 0x08, 0x08,
-    0x03, // repeats 9 times
-    0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03,
-    0x33, 0x33, 0x33, 0x0C, 0x08, 0x00, 0x00,
+static const unsigned char schedule_p2[16] = {
+    0x08, 0x08, 0x08, 0x03, // repeats 6 times
+    0x03, 0x03, 0x03, 0x03, 0x03, 0x33, 0x33, 0x33, 0x0C, 0x08, 0x00, 0x00,
 };
 
-static const unsigned char schedule_p0[20] = {
-    0x30, 0x28, 0x1F, 0x97,
-    0x87, // repeats 9 times
-    0x87, 0x87, 0x87, 0x87, 0x87, 0x87, 0x87, 0x87,
-    0x98, 0xF8, 0xF8, 0x07, 0x00, 0x00, 0x00,
+static const unsigned char schedule_p0[16] = {
+    0x30, 0x28, 0x1F, 0x97, // repeats 6 times
+    0x97, 0x97, 0x97, 0x97, 0x97, 0x98, 0xF8, 0xF8, 0x07, 0x00, 0x00, 0x00,
 };
 
 void clockinc(void) __interrupt(5) {
@@ -197,10 +193,10 @@ void main(void) {
       P0 = CFG_P0OUT;
       P2 |= CFG_P2OUT;
     } else {
-      /* The schedule is a 20 "hours" schedule with the two ports setting
-       * separate environment. Each "hour" passes in 3 minutes.
+      /* The schedule is a 16 "hours" schedule with the two ports setting
+       * separate environment.
        */
-      int virtual_hour = (clock_secs / 180) % 20;
+      int virtual_hour = (clock_secs / VIRT_HOUR_SECONDS) & 0x0F;
 
       P0 = schedule_p0[virtual_hour];
       P2 = schedule_p2[virtual_hour];
