@@ -9,15 +9,28 @@
 
 #include <at89x52.h>
 
-volatile unsigned long int ticktime = 0;
-volatile bool fastclock = false;
-
-volatile bool rsttestmode = false;
-volatile bool testmode = false;
 
 /* We can't use C constants for all of this because SDCC is not able to tell
  * that they are static constants, and sets them in RAM instead.
  */
+
+/* The maximum value we care about for the tick clock is 57600 (expanded below), which
+ * comes from the formula:
+ *
+ *    (ticks / second) × (seconds / virtual_hour) × virtual hours
+ *
+ * And we want to force a rollover at that point, to avoid the counter overflow to just
+ * mess up the schedule.
+ *
+ * This has the added benefit of only needing 16-bit for the ticktime.
+ */
+#define MAXTICK 16 * 180 * 20
+
+volatile uint16_t ticktime = 0;
+volatile bool fastclock = false;
+
+volatile bool rsttestmode = false;
+volatile bool testmode = false;
 
 #define CFG_P0OUT 0xFF
 // Only 6 bits are configured for output on P2, the other two are inputs.
@@ -81,11 +94,11 @@ void clockinc(void) __interrupt(5) {
  * This converts the ticktime value into seconds by dividing by 16 (shifting
  * right 4 bits).
  */
-static unsigned long int clock(void) {
+static uint16_t clock(void) {
 
   EA = 0;
 
-  unsigned long int ctmp = ticktime >> 4;
+  uint16_t ctmp = ticktime >> 4;
 
   EA = 1;
 
