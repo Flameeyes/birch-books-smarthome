@@ -8,10 +8,15 @@
 
 #include <at89x52.h>
 
-volatile unsigned long int clocktime;
-volatile bool clockupdate;
+volatile unsigned long int ticktime = 0;
+volatile bool fastclock = false;
 
+volatile bool rsttestmode = false;
 volatile bool testmode = false;
+
+/* We can't use C constants for all of this because SDCC is not able to tell
+ * that they are static constants, and sets them in RAM instead.
+ */
 
 #define CFG_P0OUT 0xFF
 // Only 6 bits are configured for output on P2, the other two are inputs.
@@ -21,85 +26,179 @@ volatile bool testmode = false;
 #define CFG_P2FF 0x40
 #define CFG_P2IN CFG_P2TEST | CFG_P2FF
 
+/* Use a very naive approach for the pressed states — sdcc miscompiles complex
+ * boolean operations */
 #define TEST_PRESSED (P2 & CFG_P2TEST)
 #define FF_PRESSED (P2 & CFG_P2FF)
 
-void clockinc(void) __interrupt(1)
-{
-	TH0 = (65536 - 922) / 256;
-	TL0 = (65536 - 922) % 256;
-	if (FF_PRESSED) {
-	  clocktime += 1000;
-	} else {
-	  clocktime++;
-	}
-	clockupdate = true;
+// Schedule for the Birch Books lights.
+//
+// This assumes the configuration is as follow:
+//
+// P2 => [NC, NC, 9.1, 9.0, 8 7, 6.2, 6.1]
+// P0 => [6.0, 5, 4, 3, 2, 1.2, 1.1, 1.0]
+
+static const unsigned char schedule_p2[20] = {
+    0x08, 0x08, 0x08,
+    0x03, // repeats 9 times
+    0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03,
+    0x33, 0x33, 0x33, 0x0C, 0x08, 0x00, 0x00,
+};
+
+static const unsigned char schedule_p0[20] = {
+    0x30, 0x28, 0x1F, 0x97,
+    0x87, // repeats 9 times
+    0x87, 0x87, 0x87, 0x87, 0x87, 0x87, 0x87, 0x87,
+    0x98, 0xF8, 0xF8, 0x07, 0x00, 0x00, 0x00,
+};
+
+void clockinc(void) __interrupt(5) {
+  /* Debounce the Firing flag. */
+  TF2 = 0;
+
+  /* If the main loop set the fastclock flag, increase the tick count by 32.
+   *
+   * This means that for each 62.5msec we actually record 2 seconds having
+   * passed. This "fast forward" should complete the schedule within two minutes
+   * rather than an hour.
+   */
+  if (fastclock) {
+    ticktime += 32;
+  } else {
+    ticktime++;
+  }
+
+  /* Use the P1 port for debugging, by setting up the output flags based on some
+   * of the firmware's internal flags.
+   */
+  int newP1 = 0;
+  if (fastclock)
+    newP1 |= 0x01;
+  if (FF_PRESSED)
+    newP1 |= 0x02;
+  if (TEST_PRESSED)
+    newP1 |= 0x04;
+  if (rsttestmode)
+    newP1 |= 0x08;
+  if (testmode)
+    newP1 |= 0x10;
+  P1 = newP1 & 0xFF;
 }
 
-unsigned long int clock(void)
-{
-	unsigned long int ctmp;
+/* Return the internal timer in seconds.
+ *
+ * This converts the ticktime value into seconds by dividing by 16 (shifting
+ * right 4 bits).
+ */
+static unsigned long int clock(void) {
 
-	do
-	{
-		clockupdate = false;
-		ctmp = clocktime;
-	} while (clockupdate);
+  EA = 0;
 
-	return(ctmp);
+  unsigned long int ctmp = ticktime >> 4;
+
+  EA = 1;
+
+  return (ctmp);
 }
 
-void main(void)
-{
-	// Configure timer for 11.0592 Mhz default SYSCLK
-	// 1000 ticks per second
-	TH0 = (65536 - 922) / 256;
-	TL0 = (65536 - 922) % 256;
-	TMOD = 0x01;
-	IE |= 0x82;
-	TCON |= 0x10; // Start timer
+void main(void) {
+  /* Set Timer 2 for auto-reload every 62.5ms.
+   *
+   * Timer 2 is the only timer with 16-bit auto-reload, making it much easier to
+   * set up the timer, as we don't need to manually re-set it.
+   *
+   * The way you set the T2 timer in 8051-compatible is that you need to set the
+   * counter to (65536 - usec), assuming the default behaviour of the timer
+   * running at 1MHz (sys_clock/12).
+   *
+   * The chosen constant (0x0BDB) should execute the timer every 62.5msec, which
+   * means it tickets at 1/16th of a second. This allows for a cleaner
+   * conversion between ticks and seconds by dividing by 16.
+   *
+   * You need to set both TH2,TL2 (the current timer) and RCAP2H,RCAP2L (the
+   * auto-reset values), to make sure that the timer runs smoothly.
+   *
+   * Then you need to clear TF2 ("Firing"), both here and in the interrupt
+   * routine, and set ET2 ("Enable"), TR2 ("Run"), and EA ("Interrupt Enable").
+   */
+  TH2 = 0x0B;
+  TL2 = 0xDB;
+  RCAP2H = 0x0B;
+  RCAP2L = 0xDB;
 
-	P0 = 0x00;
-	P2 = 0x00;
+  TF2 = 0;
+  ET2 = 1;
+  TR2 = 1;
+  EA = 1;
 
-	while (FF_PRESSED) {
-	  int clock_secs = clock() / 100000;
-	  if (TEST_PRESSED) {
-	    int bit = clock_secs % 14;
-	    if (bit < 8) {
-	      P0 = 1 << bit;
-	      P2 = 0;
-	    } else {
-	      bit -= 8;
-	      P2 = 1 << bit;
-	      P0 = 0;
-	    }
-	  } else {
-	    if (clock_secs % 2) {
-	      P0 = 0x55;
-	      P2 = 0xAA & CFG_P2OUT;
-	    } else {
-	      P0 = 0xAA;
-	      P2 = 0x55 & CFG_P2OUT;
-	    }
-	  }
-	}
+  /* Set the basic output ports to zero, to make sure everything starts off.
+   */
+  P0 = 0x00;
+  P1 = 0x00;
+  P2 = 0x00;
 
-	for(;;) {
-	  int clock_secs = clock() / 1000;
+  /* If FF is pressed at start, consider us in 'self-test mode'.
+   *
+   * Two self-test mode are implemented:
+   *
+   *  - If TEST is also pressed, chase a single LED through the output port.
+   *  - Otherwise strobe a "knuckle pattern" on the two ports.
+   */
+  while (FF_PRESSED) {
+    rsttestmode = true;
+    int clock_secs = clock();
+    if (TEST_PRESSED) {
+      int bit = clock_secs % 14;
+      if (bit < 8) {
+        P0 = 1 << bit;
+        P2 = 0;
+      } else {
+        bit -= 8;
+        P2 = 1 << bit;
+        P0 = 0;
+      }
+    } else {
+      if (clock_secs % 2) {
+        P0 = 0x55;
+        P2 = 0xAA & CFG_P2OUT;
+      } else {
+        P0 = 0xAA;
+        P2 = 0x55 & CFG_P2OUT;
+      }
+    }
+  }
 
-	  if (TEST_PRESSED) {
-	    testmode = !testmode;
-	  }
+  /* This is the main loop for the firmware.
+   *
+   * If TEST is pressed, toggle between test mode on or off. Test mode turns on
+   * all the of the LEDs at once.
+   *
+   * Set the `fastclock` flag here in the main loop (so that it doesn't happen
+   * during the self-test mode), which increases the ticks in the interrupt.
+   */
+  for (;;) {
+    int clock_secs = clock();
+    fastclock = FF_PRESSED;
 
-	  if (testmode) {
-	    P0 = CFG_P0OUT;
-	    P2 |= CFG_P2OUT;
-	  } else {
-	    P0 = (clock_secs) & CFG_P0OUT;
-	    P2 = (clock_secs >> 8) & CFG_P2OUT;
-	  }
+    if (TEST_PRESSED) {
+      testmode = !testmode;
+    }
 
-	  while (TEST_PRESSED);
-	}
+    if (testmode) {
+      P0 = CFG_P0OUT;
+      P2 |= CFG_P2OUT;
+    } else {
+      /* The schedule is a 20 "hours" schedule with the two ports setting
+       * separate environment. Each "hour" passes in 3 minutes.
+       */
+      int virtual_hour = (clock_secs / 180) % 20;
+
+      P0 = schedule_p0[virtual_hour];
+      P2 = schedule_p2[virtual_hour];
+    }
+
+    /* Debounce the TEST keypress. */
+    while (TEST_PRESSED)
+      ;
+  }
 }
