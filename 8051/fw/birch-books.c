@@ -19,12 +19,14 @@
  *
  *    (ticks / second) × (seconds / virtual_hour) × virtual hours
  *
+ *         16          ×         180              ×      20        = 57600
+ *
  * And we want to force a rollover at that point, to avoid the counter overflow to just
  * mess up the schedule.
  *
  * This has the added benefit of only needing 16-bit for the ticktime.
  */
-#define MAXTICK 16 * 180 * 20
+#define MAXTICK 57600
 
 volatile uint16_t ticktime = 0;
 volatile bool fastclock = false;
@@ -78,6 +80,9 @@ void clockinc(void) __interrupt(5) {
   }
 
   ticktime += tickvalue;
+
+  if (ticktime > MAXTICK)
+    ticktime -= MAXTICK;
 
   /* Use the P1 port for debugging, by setting up the output flags based on some
    * of the firmware's internal flags.
