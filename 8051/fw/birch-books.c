@@ -71,18 +71,11 @@ void clockinc(void) __interrupt(5) {
   /* Use the P1 port for debugging, by setting up the output flags based on some
    * of the firmware's internal flags.
    */
-  int newP1 = 0;
-  if (fastclock)
-    newP1 |= 0x01;
-  if (FF_PRESSED)
-    newP1 |= 0x02;
-  if (TEST_PRESSED)
-    newP1 |= 0x04;
-  if (rsttestmode)
-    newP1 |= 0x08;
-  if (testmode)
-    newP1 |= 0x10;
-  P1 = newP1 & 0xFF;
+  P1_0 = (bool)fastclock;
+  P1_1 = (bool)FF_PRESSED;
+  P1_2 = (bool)TEST_PRESSED;
+  P1_3 = (bool)rsttestmode;
+  P1_4 = (bool)testmode;
 }
 
 /* Return the internal timer in seconds.
