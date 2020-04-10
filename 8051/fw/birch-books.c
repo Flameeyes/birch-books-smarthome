@@ -13,20 +13,6 @@
  * that they are static constants, and sets them in RAM instead.
  */
 
-/* The maximum value we care about for the tick clock is 57600 (expanded below),
- * which comes from the formula:
- *
- *    (ticks / second) × (seconds / virtual_hour) × virtual hours
- *
- *         16          ×         225              ×      16        = 57600
- *
- * And we want to force a rollover at that point, to avoid the counter overflow
- * to just mess up the schedule.
- *
- * This has the added benefit of only needing 16-bit for the ticktime.
- */
-#define MAXTICK 57600
-#define VIRT_HOUR_SECONDS 225
 
 volatile uint16_t ticktime = 0;
 volatile bool fastclock = false;
@@ -43,12 +29,19 @@ volatile bool testmode = false;
 #define TEST_PRESSED P2_7
 #define FF_PRESSED P2_6
 
-// Schedule for the Birch Books lights.
-//
-// This assumes the configuration is as follow:
-//
-// P2 => [NC, NC, 9.1, 9.0, 8 7, 6.2, 6.1]
-// P0 => [6.0, 5, 4, 3, 2, 1.2, 1.1, 1.0]
+/* Schedule for the Birch Books lights.
+ *
+ * We provide a table of 16 "virtual hours" that will run for 256 seconds each. This
+ * gives us a a complete cycle in just more than an hour, but simplifies the logic and
+ * generated code significantly.
+ *
+ *   cycle = 256 × 16 ÷ 60 = 68.26… minutes
+ *
+ * This assumes the configuration is as follow:
+ *
+ * P2 => [NC, NC, 9.1, 9.0, 8 7, 6.2, 6.1]
+ * P0 => [6.0, 5, 4, 3, 2, 1.2, 1.1, 1.0]
+ */
 
 static const unsigned char schedule_p2[16] = {
     0x08, 0x08, 0x08, 0x03, // repeats 6 times
@@ -75,10 +68,10 @@ void clockinc(void) __interrupt(5) {
     tickvalue = 32;
   }
 
+  /* We let the ticktime overflow transparently, from 65535 back to 0.
+   * This simplifies our code quite a bit as we don't need to divide anything.
+   */
   ticktime += tickvalue;
-
-  if (ticktime > MAXTICK)
-    ticktime -= MAXTICK;
 
   /* Use the P1 port for debugging, by setting up the output flags based on some
    * of the firmware's internal flags.
@@ -196,7 +189,7 @@ void main(void) {
       /* The schedule is a 16 "hours" schedule with the two ports setting
        * separate environment.
        */
-      int virtual_hour = (clock_secs / VIRT_HOUR_SECONDS) & 0x0F;
+      int virtual_hour = (clock_secs >> 8) & 0x0F;
 
       P0 = schedule_p0[virtual_hour];
       P2 = schedule_p2[virtual_hour];
