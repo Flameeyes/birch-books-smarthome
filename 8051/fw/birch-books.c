@@ -22,14 +22,10 @@ volatile bool testmode = false;
 // Only 6 bits are configured for output on P2, the other two are inputs.
 #define CFG_P2OUT 0x3F
 
-#define CFG_P2TEST 0x80
-#define CFG_P2FF 0x40
-#define CFG_P2IN CFG_P2TEST | CFG_P2FF
-
 /* Use a very naive approach for the pressed states — sdcc miscompiles complex
  * boolean operations */
-#define TEST_PRESSED (P2 & CFG_P2TEST)
-#define FF_PRESSED (P2 & CFG_P2FF)
+#define TEST_PRESSED P2_7
+#define FF_PRESSED P2_6
 
 // Schedule for the Birch Books lights.
 //
