@@ -5,6 +5,7 @@
 // http://www.colecovision.eu/mcs51/STC89%20DEMO%20BOARD%20LED.shtml
 
 #include <stdbool.h>
+#include <stdint.h>
 
 #include <at89x52.h>
 
@@ -58,11 +59,12 @@ void clockinc(void) __interrupt(5) {
    * passed. This "fast forward" should complete the schedule within two minutes
    * rather than an hour.
    */
+  uint8_t tickvalue = 1;
   if (fastclock) {
-    ticktime += 32;
-  } else {
-    ticktime++;
+    tickvalue = 32;
   }
+
+  ticktime += tickvalue;
 
   /* Use the P1 port for debugging, by setting up the output flags based on some
    * of the firmware's internal flags.
