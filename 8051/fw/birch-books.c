@@ -144,14 +144,9 @@ void main(void) {
     uint16_t clock_secs = ticks() >> 4;
     if (TEST_PRESSED) {
       uint8_t bit = clock_secs % 14;
-      if (bit < 8) {
-        P0 = 1 << bit;
-        P2 = 0;
-      } else {
-        bit -= 8;
-        P2 = 1 << bit;
-        P0 = 0;
-      }
+      uint16_t val = 1 << bit;
+      P0 = val & 0xFF;
+      P2 = val >> 8;
     } else {
       if (clock_secs & 0x01) {
         P0 = 0x55;
