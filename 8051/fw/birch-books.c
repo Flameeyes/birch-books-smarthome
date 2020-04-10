@@ -189,7 +189,7 @@ void main(void) {
       /* The schedule is a 16 "hours" schedule with the two ports setting
        * separate environment.
        */
-      int virtual_hour = (clock_secs >> 8) & 0x0F;
+      uint8_t virtual_hour = (clock_secs >> 8) & 0x0F;
 
       P0 = schedule_p0[virtual_hour];
       P2 = schedule_p2[virtual_hour];
