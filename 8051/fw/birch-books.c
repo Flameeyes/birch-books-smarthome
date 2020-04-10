@@ -143,7 +143,7 @@ void main(void) {
     rsttestmode = true;
     uint16_t clock_secs = ticks() >> 4;
     if (TEST_PRESSED) {
-      int bit = clock_secs % 14;
+      uint8_t bit = clock_secs % 14;
       if (bit < 8) {
         P0 = 1 << bit;
         P2 = 0;
