@@ -83,20 +83,17 @@ void clockinc(void) __interrupt(5) {
   P1_4 = (bool)testmode;
 }
 
-/* Return the internal timer in seconds.
+/* Return the internal timer in ticks (1/16th of a second).
  *
- * This converts the ticktime value into seconds by dividing by 16 (shifting
- * right 4 bits).
+ * The only difference to accessing ticktime directly is that a copy is made while
+ * interrupts are disabled, to avoid it changing during access.
  */
-static uint16_t clock(void) {
-
+static uint16_t ticks() {
   EA = 0;
-
-  uint16_t ctmp = ticktime >> 4;
-
+  uint16_t ctmp = ticktime;
   EA = 1;
 
-  return (ctmp);
+  return ctmp;
 }
 
 void main(void) {
@@ -144,7 +141,7 @@ void main(void) {
    */
   while (FF_PRESSED) {
     rsttestmode = true;
-    int clock_secs = clock();
+    uint16_t clock_secs = ticks() >> 4;
     if (TEST_PRESSED) {
       int bit = clock_secs % 14;
       if (bit < 8) {
@@ -175,7 +172,6 @@ void main(void) {
    * during the self-test mode), which increases the ticks in the interrupt.
    */
   for (;;) {
-    int clock_secs = clock();
     fastclock = FF_PRESSED;
 
     if (TEST_PRESSED) {
@@ -188,8 +184,16 @@ void main(void) {
     } else {
       /* The schedule is a 16 "hours" schedule with the two ports setting
        * separate environment.
+       *
+       * We calculate the schedule directly in ticks. There's 256 seconds in a "virtual
+       * hour", and since ticks go to 1/16th of a second, this brings us to 4096 ticks
+       * per "virtual hour".
+       *
+       * Unfortunately we need to explicitly express this as a shift, otherwise sdcc
+       * generates an integer division function call.
        */
-      uint8_t virtual_hour = (clock_secs >> 8) & 0x0F;
+      uint16_t clock_ticks = ticks();
+      uint8_t virtual_hour = (clock_ticks >> 12) & 0x0F;
 
       P0 = schedule_p0[virtual_hour];
       P2 = schedule_p2[virtual_hour];
