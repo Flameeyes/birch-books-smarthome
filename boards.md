@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2020 The birch-books-smarthome Authors
+
+SPDX-License-Identifier: MIT
+-->
+
 # Board Description
 
 For the Birch Books Smart Home project I decided to design the system with two type of

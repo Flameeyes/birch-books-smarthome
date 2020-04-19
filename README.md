@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2020 The birch-books-smarthome Authors
+
+SPDX-License-Identifier: MIT
+-->
+
 # Birch Books Smart Home
 
 This repository contains code, schematics, documentation and notes to implement a

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2020 The birch-books-smarthome Authors
+#
+# SPDX-License-Identifier: MIT
+
 *~
 /eagle-boards/**/*.b#*
 /eagle-boards/**/*.pro
