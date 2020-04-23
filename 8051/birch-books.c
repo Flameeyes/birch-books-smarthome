@@ -9,6 +9,8 @@
 
 #include <at89x52.h>
 
+#include "schedule.h"
+
 /* We can't use C constants for all of this because SDCC is not able to tell
  * that they are static constants, and sets them in RAM instead.
  */
@@ -27,30 +29,6 @@ volatile bool testmode = false;
  * boolean operations */
 #define TEST_PRESSED P2_7
 #define FF_PRESSED P2_6
-
-/* Schedule for the Birch Books lights.
- *
- * We provide a table of 16 "virtual hours" that will run for 256 seconds each.
- * This gives us a a complete cycle in just more than an hour, but simplifies
- * the logic and generated code significantly.
- *
- *   cycle = 256 × 16 ÷ 60 = 68.26… minutes
- *
- * This assumes the configuration is as follow:
- *
- * P2 => [NC, NC, 9.1, 9.0, 8 7, 6.2, 6.1]
- * P0 => [6.0, 5, 4, 3, 2, 1.2, 1.1, 1.0]
- */
-
-static const unsigned char schedule_p2[16] = {
-    0x08, 0x08, 0x08, 0x03, // repeats 6 times
-    0x03, 0x03, 0x03, 0x03, 0x03, 0x33, 0x33, 0x33, 0x0C, 0x08, 0x00, 0x00,
-};
-
-static const unsigned char schedule_p0[16] = {
-    0x30, 0x28, 0x1F, 0x97, // repeats 6 times
-    0x97, 0x97, 0x97, 0x97, 0x97, 0x98, 0xF8, 0xF8, 0x07, 0x00, 0x00, 0x00,
-};
 
 void clockinc(void) __interrupt(5) {
   /* Debounce the Firing flag. */
@@ -135,17 +113,17 @@ void main(void) {
    *
    * Two self-test mode are implemented:
    *
-   *  - If TEST is also pressed, chase a single LED through the output port.
+   *  - If TEST is also pressed, chase a single room through the output port.
    *  - Otherwise strobe a "knuckle pattern" on the two ports.
    */
   while (FF_PRESSED) {
     rsttestmode = true;
     uint16_t clock_secs = ticks() >> 4;
     if (TEST_PRESSED) {
-      uint8_t bit = clock_secs % 14;
-      uint16_t val = 1 << bit;
-      P0 = val & 0xFF;
-      P2 = val >> 8;
+      uint8_t test_index = clock_secs % 10;
+
+      P0 = test_schedule[test_index] & 0xFF;
+      P2 = test_schedule[test_index] >> 8;
     } else {
       if (clock_secs & 0x01) {
         P0 = 0x55;
@@ -198,8 +176,8 @@ void main(void) {
       uint16_t clock_ticks = ticks();
       uint8_t virtual_hour = (clock_ticks >> 12) & 0x0F;
 
-      P0 = schedule_p0[virtual_hour];
-      P2 = schedule_p2[virtual_hour];
+      P0 = schedule[virtual_hour] & 0xFF;
+      P2 = schedule[virtual_hour] >> 8;
     }
   }
 }

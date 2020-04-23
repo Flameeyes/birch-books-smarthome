@@ -1,0 +1,57 @@
+// SPDX-FileCopyrightText: © 2020 The birch-books-smarthome Authors
+// SPDX-License-Identifier: MIT
+
+#include <stdint.h>
+
+/* Schedule for the Birch Books lights.
+ *
+ * We provide a table of 16 "virtual hours" that will run for 256 seconds each.
+ * This gives us a a complete cycle in just more than an hour, but simplifies
+ * the logic and generated code significantly.
+ *
+ *   cycle = 256 × 16 ÷ 60 = 68.26… minutes
+ *
+ * This assumes the configuration is as follow:
+ *
+ * P2 => [NC, NC, 9.1, 9.0, 8 7, 6.2, 6.1]
+ * P0 => [6.0, 5, 4, 3, 2, 1.2, 1.1, 1.0]
+ */
+
+#define BOOKSTORE_GROUND_FLOOR 0x0007
+#define BOOKSTORE_FIRST_FLOOR 0x0008
+#define BOOKSTORE_TERRARIUM 0x0010
+#define BOOKSTORE_BEDROOM 0x0020
+#define HOUSE_BASEMENT 0x0040
+#define HOUSE_GROUND_FLOOR 0x0380
+#define HOUSE_BEDROOM_LIGHT 0x0400
+#define HOUSE_BEDROOM_LAMP 0x0800
+#define HOUSE_FIREPLACE_1 0x1000
+#define HOUSE_FIREPLACE_2 0x2000
+
+static const uint16_t schedule[16] = {
+    /* 00 */ BOOKSTORE_BEDROOM | HOUSE_BEDROOM_LIGHT,
+    /* 01 */ BOOKSTORE_TERRARIUM | BOOKSTORE_BEDROOM | HOUSE_BEDROOM_LIGHT,
+    /* 02 */ BOOKSTORE_TERRARIUM | BOOKSTORE_FIRST_FLOOR | HOUSE_BEDROOM_LIGHT,
+    /* 03 */ BOOKSTORE_TERRARIUM | BOOKSTORE_GROUND_FLOOR | HOUSE_GROUND_FLOOR,
+    /* 04 */ BOOKSTORE_TERRARIUM | BOOKSTORE_GROUND_FLOOR | HOUSE_GROUND_FLOOR,
+    /* 05 */ BOOKSTORE_TERRARIUM | BOOKSTORE_GROUND_FLOOR, // 4 times
+    /* 06 */ BOOKSTORE_TERRARIUM | BOOKSTORE_GROUND_FLOOR,
+    /* 07 */ BOOKSTORE_TERRARIUM | BOOKSTORE_GROUND_FLOOR,
+    /* 08 */ BOOKSTORE_TERRARIUM | BOOKSTORE_GROUND_FLOOR,
+    /* 09 */ BOOKSTORE_TERRARIUM | BOOKSTORE_GROUND_FLOOR | HOUSE_GROUND_FLOOR,
+    /* 10 */ BOOKSTORE_TERRARIUM | BOOKSTORE_FIRST_FLOOR | HOUSE_GROUND_FLOOR,
+    /* 11 */ BOOKSTORE_TERRARIUM | BOOKSTORE_FIRST_FLOOR | HOUSE_BASEMENT |
+        HOUSE_BEDROOM_LIGHT,
+    /* 12 */ BOOKSTORE_TERRARIUM | BOOKSTORE_BEDROOM | HOUSE_BASEMENT |
+        HOUSE_BEDROOM_LAMP,
+    /* 13 */ BOOKSTORE_BEDROOM | HOUSE_BEDROOM_LAMP,
+    /* 14 */ 0,
+    /* 15 */ 0,
+};
+
+static const uint16_t test_schedule[10] = {
+    BOOKSTORE_GROUND_FLOOR, BOOKSTORE_FIRST_FLOOR, BOOKSTORE_TERRARIUM,
+    BOOKSTORE_BEDROOM,      HOUSE_BASEMENT,        HOUSE_GROUND_FLOOR,
+    HOUSE_BEDROOM_LIGHT,    HOUSE_BEDROOM_LAMP,    HOUSE_FIREPLACE_1,
+    HOUSE_FIREPLACE_2,
+};
