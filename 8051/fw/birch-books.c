@@ -171,6 +171,14 @@ void main(void) {
 
     if (TEST_PRESSED) {
       testmode = !testmode;
+
+      /* Debounce the TEST keypress.
+       *
+       * We do this here to make sure we don't see the button-press while we update the
+       * outputs. Sounds silly, but at 12MHz it's possible for a human to race the code.
+       */
+      while (TEST_PRESSED)
+	;
     }
 
     if (testmode) {
@@ -193,9 +201,5 @@ void main(void) {
       P0 = schedule_p0[virtual_hour];
       P2 = schedule_p2[virtual_hour];
     }
-
-    /* Debounce the TEST keypress. */
-    while (TEST_PRESSED)
-      ;
   }
 }
