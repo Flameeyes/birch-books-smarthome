@@ -34,15 +34,15 @@ void clockinc(void) __interrupt(5) {
   /* Debounce the Firing flag. */
   TF2 = 0;
 
-  /* If the main loop set the fastclock flag, increase the tick count by 32.
+  /* If the main loop set the fastclock flag, increase the tick count by 64.
    *
-   * This means that for each 62.5msec we actually record 2 seconds having
-   * passed. This "fast forward" should complete the schedule within two minutes
+   * This means that for each 62.5msec we actually record 4 seconds having
+   * passed. This "fast forward" should complete the schedule within a minute
    * rather than an hour.
    */
   uint8_t tickvalue = 1;
   if (fastclock) {
-    tickvalue = 32;
+    tickvalue = 64;
   }
 
   /* We let the ticktime overflow transparently, from 65535 back to 0.
