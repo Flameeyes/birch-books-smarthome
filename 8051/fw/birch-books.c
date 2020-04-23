@@ -13,7 +13,6 @@
  * that they are static constants, and sets them in RAM instead.
  */
 
-
 volatile uint16_t ticktime = 0;
 volatile bool fastclock = false;
 
@@ -31,9 +30,9 @@ volatile bool testmode = false;
 
 /* Schedule for the Birch Books lights.
  *
- * We provide a table of 16 "virtual hours" that will run for 256 seconds each. This
- * gives us a a complete cycle in just more than an hour, but simplifies the logic and
- * generated code significantly.
+ * We provide a table of 16 "virtual hours" that will run for 256 seconds each.
+ * This gives us a a complete cycle in just more than an hour, but simplifies
+ * the logic and generated code significantly.
  *
  *   cycle = 256 × 16 ÷ 60 = 68.26… minutes
  *
@@ -85,8 +84,8 @@ void clockinc(void) __interrupt(5) {
 
 /* Return the internal timer in ticks (1/16th of a second).
  *
- * The only difference to accessing ticktime directly is that a copy is made while
- * interrupts are disabled, to avoid it changing during access.
+ * The only difference to accessing ticktime directly is that a copy is made
+ * while interrupts are disabled, to avoid it changing during access.
  */
 static uint16_t ticks() {
   EA = 0;
@@ -174,11 +173,12 @@ void main(void) {
 
       /* Debounce the TEST keypress.
        *
-       * We do this here to make sure we don't see the button-press while we update the
-       * outputs. Sounds silly, but at 12MHz it's possible for a human to race the code.
+       * We do this here to make sure we don't see the button-press while we
+       * update the outputs. Sounds silly, but at 12MHz it's possible for a
+       * human to race the code.
        */
       while (TEST_PRESSED)
-	;
+        ;
     }
 
     if (testmode) {
@@ -188,12 +188,12 @@ void main(void) {
       /* The schedule is a 16 "hours" schedule with the two ports setting
        * separate environment.
        *
-       * We calculate the schedule directly in ticks. There's 256 seconds in a "virtual
-       * hour", and since ticks go to 1/16th of a second, this brings us to 4096 ticks
-       * per "virtual hour".
+       * We calculate the schedule directly in ticks. There's 256 seconds in a
+       * "virtual hour", and since ticks go to 1/16th of a second, this brings
+       * us to 4096 ticks per "virtual hour".
        *
-       * Unfortunately we need to explicitly express this as a shift, otherwise sdcc
-       * generates an integer division function call.
+       * Unfortunately we need to explicitly express this as a shift, otherwise
+       * sdcc generates an integer division function call.
        */
       uint16_t clock_ticks = ticks();
       uint8_t virtual_hour = (clock_ticks >> 12) & 0x0F;
