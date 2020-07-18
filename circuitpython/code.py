@@ -20,8 +20,10 @@ if 32 in i2c_devices:
     mcp = MCP23016(i2c)
     print("Found MCP23016 @ 32")
 elif 33 in i2c_devices:
-    mcp = MCP23017(i2c)
+    mcp = MCP23017(i2c, address=33)
     print("Found MCP13017 @ 33")
+else:
+    raise Exception("No GPIO Expander found.")
 
 mcp.iodir = 0xC000
 
@@ -35,7 +37,7 @@ def write_gp(value):
 
 while ff_pin.value:
     print("Entering on-reset test loop.")
-    clock_secs = int(time.time())
+    clock_secs = int(time.monotonic())
 
     if test_pin.value:
         write_gp(schedule.TEST_SCHEDULE[clock_secs % 10])
@@ -71,11 +73,17 @@ while True:
     else:
         seconds_per_virtualhour = 240
 
-    new_virtual_hour = (time.time() // seconds_per_virtualhour) % 16
+    monotonic = int(time.monotonic())
+    monotonic_hour = monotonic // seconds_per_virtualhour
+
+    new_virtual_hour = monotonic_hour % 16
     if virtual_hour == new_virtual_hour:
         continue
     virtual_hour = new_virtual_hour
 
-    print("It's %d o'clock and all is well." % new_virtual_hour)
+    print(
+        "It's %d o'clock (%d %d) and all is well."
+        % (virtual_hour, monotonic_hour, monotonic)
+    )
 
     write_gp(schedule.SCHEDULE[virtual_hour])
