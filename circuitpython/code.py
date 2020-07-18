@@ -5,8 +5,9 @@ import time
 
 import board
 import busio
-from adafruit_mcp230xx.mcp23017 import MCP23017
+
 from adafruit_mcp230xx.mcp23016 import MCP23016
+from adafruit_mcp230xx.mcp23017 import MCP23017
 
 import schedule
 

@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2020 The birch-books-smarthome Authors
+#
+# SPDX-License-Identifier: 0BSD
+
+[tool.isort]
+# These settings ensure that black and isort don't disagree on the imports.
+line_length = 88
+multi_line_output = 3
+include_trailing_comma = true
+
+known_circuitpython = ["board", "busio"]
+known_third_party = ["adafruit_mcp230xx"]
+known_first_party = ["schedule"]
+sections = "FUTURE,STDLIB,CIRCUITPYTHON,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
