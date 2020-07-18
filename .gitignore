@@ -17,3 +17,5 @@
 /8051/*.rst
 /8051/*.sym
 *.zip
+/venv
+/.vscode
