@@ -575,32 +575,12 @@ In this library the device names are the same as the pin names of the symbols, t
 <text x="-1.905" y="3.175" size="1.778" layer="96">&gt;VALUE</text>
 <pin name="VCC" x="0" y="-2.54" visible="off" length="short" direction="sup" rot="R90"/>
 </symbol>
-<symbol name="GND" urn="urn:adsk.eagle:symbol:26990/1" library_version="2">
-<wire x1="-1.27" y1="0" x2="1.27" y2="0" width="0.254" layer="94"/>
-<wire x1="1.27" y1="0" x2="0" y2="-1.27" width="0.254" layer="94"/>
-<wire x1="0" y1="-1.27" x2="-1.27" y2="0" width="0.254" layer="94"/>
-<text x="-1.905" y="-3.175" size="1.778" layer="96">&gt;VALUE</text>
-<pin name="GND" x="0" y="2.54" visible="off" length="short" direction="sup" rot="R270"/>
-</symbol>
 </symbols>
 <devicesets>
 <deviceset name="VCC" urn="urn:adsk.eagle:component:27060/1" prefix="SUPPLY" library_version="2">
 <description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
 <gates>
 <gate name="G$1" symbol="VCC" x="0" y="0"/>
-</gates>
-<devices>
-<device name="">
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
-<deviceset name="GND" urn="urn:adsk.eagle:component:27037/1" prefix="SUPPLY" library_version="2">
-<description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
-<gates>
-<gate name="GND" symbol="GND" x="0" y="0"/>
 </gates>
 <devices>
 <device name="">
@@ -5644,6 +5624,39 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 </deviceset>
 </devicesets>
 </library>
+<library name="supply1" urn="urn:adsk.eagle:library:371">
+<description>&lt;b&gt;Supply Symbols&lt;/b&gt;&lt;p&gt;
+ GND, VCC, 0V, +5V, -5V, etc.&lt;p&gt;
+ Please keep in mind, that these devices are necessary for the
+ automatic wiring of the supply signals.&lt;p&gt;
+ The pin name defined in the symbol is identical to the net which is to be wired automatically.&lt;p&gt;
+ In this library the device names are the same as the pin names of the symbols, therefore the correct signal names appear next to the supply symbols in the schematic.&lt;p&gt;
+ &lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
+<packages>
+</packages>
+<symbols>
+<symbol name="GND" urn="urn:adsk.eagle:symbol:26925/1" library_version="1">
+<wire x1="-1.905" y1="0" x2="1.905" y2="0" width="0.254" layer="94"/>
+<text x="-2.54" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="GND" x="0" y="2.54" visible="off" length="short" direction="sup" rot="R270"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="GND" urn="urn:adsk.eagle:component:26954/1" prefix="GND" library_version="1">
+<description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
+<gates>
+<gate name="1" symbol="GND" x="0" y="0"/>
+</gates>
+<devices>
+<device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -5658,16 +5671,17 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <part name="IC1" library="uln-udn" library_urn="urn:adsk.eagle:library:407" deviceset="ULN2003A" device="N" package3d_urn="urn:adsk.eagle:package:922/2" value="ULN2003AN"/>
 <part name="LEDS" library="con-lsta" library_urn="urn:adsk.eagle:library:161" deviceset="FE15-2" device="" package3d_urn="urn:adsk.eagle:package:8183/1"/>
 <part name="SUPPLY1" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="VCC" device=""/>
-<part name="SUPPLY2" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="GND" device=""/>
+<part name="SUPPLY2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="S_FF" library="switch-omron" library_urn="urn:adsk.eagle:library:377" deviceset="10-XX" device="" package3d_urn="urn:adsk.eagle:package:27496/1"/>
 <part name="S_TEST" library="switch-omron" library_urn="urn:adsk.eagle:library:377" deviceset="10-XX" device="" package3d_urn="urn:adsk.eagle:package:27496/1"/>
-<part name="MCU" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA20-1" device="" package3d_urn="urn:adsk.eagle:package:8359/1"/>
 <part name="S_RST" library="switch-omron" library_urn="urn:adsk.eagle:library:377" deviceset="10-XX" device="" package3d_urn="urn:adsk.eagle:package:27496/1"/>
 <part name="RN1" library="resistor-net" library_urn="urn:adsk.eagle:library:343" deviceset="RN07" device="" package3d_urn="urn:adsk.eagle:package:24978/1" value="47"/>
 <part name="RN2" library="resistor-net" library_urn="urn:adsk.eagle:library:343" deviceset="RN07" device="" package3d_urn="urn:adsk.eagle:package:24978/1" value="47"/>
 <part name="R1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="1k"/>
 <part name="R2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="1k"/>
 <part name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="1k"/>
+<part name="MCU1" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA20-1" device="" package3d_urn="urn:adsk.eagle:package:8359/1"/>
+<part name="SUPPLY3" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="VCC" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -5686,10 +5700,10 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <attribute name="VALUE" x="39.37" y="-8.89" size="1.778" layer="96" rot="R270"/>
 <attribute name="NAME" x="83.312" y="-8.89" size="1.778" layer="95" rot="R270"/>
 </instance>
-<instance part="SUPPLY1" gate="G$1" x="8.89" y="72.39" smashed="yes" rot="R180">
-<attribute name="VALUE" x="12.065" y="69.215" size="1.778" layer="96" rot="R180"/>
+<instance part="SUPPLY1" gate="G$1" x="27.94" y="-10.668" smashed="yes">
+<attribute name="VALUE" x="24.765" y="-7.493" size="1.778" layer="96"/>
 </instance>
-<instance part="SUPPLY2" gate="GND" x="90.17" y="-7.62" smashed="yes">
+<instance part="SUPPLY2" gate="1" x="90.17" y="-7.62" smashed="yes">
 <attribute name="VALUE" x="88.265" y="-10.795" size="1.778" layer="96"/>
 </instance>
 <instance part="S_FF" gate="1" x="50.8" y="142.24" smashed="yes">
@@ -5699,10 +5713,6 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <instance part="S_TEST" gate="1" x="40.64" y="142.24" smashed="yes">
 <attribute name="NAME" x="34.29" y="139.7" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="36.83" y="145.415" size="1.778" layer="96" rot="R90"/>
-</instance>
-<instance part="MCU" gate="1" x="1.27" y="97.79" smashed="yes">
-<attribute name="VALUE" x="0" y="69.85" size="1.778" layer="96"/>
-<attribute name="NAME" x="0" y="126.492" size="1.778" layer="95"/>
 </instance>
 <instance part="S_RST" gate="1" x="30.48" y="142.24" smashed="yes">
 <attribute name="NAME" x="24.13" y="139.7" size="1.778" layer="95" rot="R90"/>
@@ -5727,6 +5737,13 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <instance part="R3" gate="G$1" x="33.02" y="129.54" smashed="yes" rot="R270">
 <attribute name="NAME" x="34.5186" y="133.35" size="1.778" layer="95" rot="R270"/>
 <attribute name="VALUE" x="29.718" y="133.35" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="MCU1" gate="1" x="107.95" y="97.79" smashed="yes" rot="MR0">
+<attribute name="VALUE" x="109.22" y="69.85" size="1.778" layer="96" rot="MR0"/>
+<attribute name="NAME" x="109.22" y="126.492" size="1.778" layer="95" rot="MR0"/>
+</instance>
+<instance part="SUPPLY3" gate="G$1" x="115.57" y="77.47" smashed="yes">
+<attribute name="VALUE" x="112.395" y="80.645" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -5884,26 +5901,6 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <wire x1="36.83" y1="5.08" x2="38.1" y2="5.08" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="VCC" class="0">
-<segment>
-<pinref part="MCU" gate="1" pin="1"/>
-<pinref part="SUPPLY1" gate="G$1" pin="VCC"/>
-<wire x1="8.89" y1="74.93" x2="27.94" y2="74.93" width="0.1524" layer="91"/>
-<wire x1="27.94" y1="74.93" x2="27.94" y2="-20.32" width="0.1524" layer="91"/>
-<junction x="8.89" y="74.93"/>
-<pinref part="RN1" gate="1" pin="1"/>
-<wire x1="33.02" y1="-20.32" x2="27.94" y2="-20.32" width="0.1524" layer="91"/>
-<pinref part="RN2" gate="1" pin="1"/>
-<wire x1="33.02" y1="-66.04" x2="27.94" y2="-66.04" width="0.1524" layer="91"/>
-<wire x1="27.94" y1="-66.04" x2="27.94" y2="-20.32" width="0.1524" layer="91"/>
-<junction x="27.94" y="-20.32"/>
-<pinref part="LEDS" gate="1" pin="30"/>
-<wire x1="80.01" y1="-20.32" x2="80.01" y2="-109.22" width="0.1524" layer="91"/>
-<wire x1="80.01" y1="-109.22" x2="27.94" y2="-109.22" width="0.1524" layer="91"/>
-<wire x1="27.94" y1="-109.22" x2="27.94" y2="-66.04" width="0.1524" layer="91"/>
-<junction x="27.94" y="-66.04"/>
-</segment>
-</net>
 <net name="N$2" class="0">
 <segment>
 <pinref part="S_RST" gate="1" pin="S"/>
@@ -5913,11 +5910,10 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <wire x1="33.02" y1="147.32" x2="40.64" y2="147.32" width="0.1524" layer="91"/>
 <wire x1="40.64" y1="147.32" x2="43.18" y2="147.32" width="0.1524" layer="91"/>
 <junction x="40.64" y="147.32"/>
-<pinref part="MCU" gate="1" pin="19"/>
 <wire x1="43.18" y1="147.32" x2="50.8" y2="147.32" width="0.1524" layer="91"/>
-<wire x1="8.89" y1="120.65" x2="16.51" y2="120.65" width="0.1524" layer="91"/>
-<wire x1="16.51" y1="120.65" x2="16.51" y2="147.32" width="0.1524" layer="91"/>
-<wire x1="16.51" y1="147.32" x2="30.48" y2="147.32" width="0.1524" layer="91"/>
+<wire x1="100.33" y1="120.65" x2="59.69" y2="120.65" width="0.1524" layer="91"/>
+<wire x1="59.69" y1="120.65" x2="59.69" y2="147.32" width="0.1524" layer="91"/>
+<wire x1="59.69" y1="147.32" x2="30.48" y2="147.32" width="0.1524" layer="91"/>
 <junction x="30.48" y="147.32"/>
 <pinref part="S_TEST" gate="1" pin="S1"/>
 <junction x="43.18" y="147.32"/>
@@ -5926,160 +5922,161 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <pinref part="S_FF" gate="1" pin="S1"/>
 <wire x1="50.8" y1="147.32" x2="53.34" y2="147.32" width="0.1524" layer="91"/>
 <junction x="50.8" y="147.32"/>
+<pinref part="MCU1" gate="1" pin="19"/>
 </segment>
 </net>
 <net name="N$3" class="0">
 <segment>
-<pinref part="MCU" gate="1" pin="2"/>
 <pinref part="IC1" gate="A" pin="I7"/>
-<wire x1="8.89" y1="77.47" x2="36.83" y2="77.47" width="0.1524" layer="91"/>
+<wire x1="100.33" y1="77.47" x2="36.83" y2="77.47" width="0.1524" layer="91"/>
 <wire x1="36.83" y1="77.47" x2="36.83" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="MCU1" gate="1" pin="2"/>
 </segment>
 </net>
 <net name="N$4" class="0">
 <segment>
-<pinref part="MCU" gate="1" pin="3"/>
 <pinref part="IC1" gate="A" pin="I6"/>
-<wire x1="8.89" y1="80.01" x2="39.37" y2="80.01" width="0.1524" layer="91"/>
+<wire x1="100.33" y1="80.01" x2="39.37" y2="80.01" width="0.1524" layer="91"/>
 <wire x1="39.37" y1="80.01" x2="39.37" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="MCU1" gate="1" pin="3"/>
 </segment>
 </net>
 <net name="N$5" class="0">
 <segment>
-<pinref part="MCU" gate="1" pin="4"/>
 <pinref part="IC1" gate="A" pin="I5"/>
-<wire x1="8.89" y1="82.55" x2="41.91" y2="82.55" width="0.1524" layer="91"/>
+<wire x1="100.33" y1="82.55" x2="41.91" y2="82.55" width="0.1524" layer="91"/>
 <wire x1="41.91" y1="82.55" x2="41.91" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="MCU1" gate="1" pin="4"/>
 </segment>
 </net>
 <net name="N$6" class="0">
 <segment>
-<pinref part="MCU" gate="1" pin="5"/>
 <pinref part="IC1" gate="A" pin="I4"/>
-<wire x1="8.89" y1="85.09" x2="44.45" y2="85.09" width="0.1524" layer="91"/>
+<wire x1="100.33" y1="85.09" x2="44.45" y2="85.09" width="0.1524" layer="91"/>
 <wire x1="44.45" y1="85.09" x2="44.45" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="MCU1" gate="1" pin="5"/>
 </segment>
 </net>
 <net name="N$7" class="0">
 <segment>
-<pinref part="MCU" gate="1" pin="6"/>
 <pinref part="IC1" gate="A" pin="I3"/>
-<wire x1="8.89" y1="87.63" x2="46.99" y2="87.63" width="0.1524" layer="91"/>
+<wire x1="100.33" y1="87.63" x2="46.99" y2="87.63" width="0.1524" layer="91"/>
 <wire x1="46.99" y1="87.63" x2="46.99" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="MCU1" gate="1" pin="6"/>
 </segment>
 </net>
 <net name="N$8" class="0">
 <segment>
-<pinref part="MCU" gate="1" pin="7"/>
 <pinref part="IC1" gate="A" pin="I2"/>
-<wire x1="8.89" y1="90.17" x2="49.53" y2="90.17" width="0.1524" layer="91"/>
+<wire x1="100.33" y1="90.17" x2="49.53" y2="90.17" width="0.1524" layer="91"/>
 <wire x1="49.53" y1="90.17" x2="49.53" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="MCU1" gate="1" pin="7"/>
 </segment>
 </net>
 <net name="N$1" class="0">
 <segment>
-<pinref part="MCU" gate="1" pin="8"/>
 <pinref part="IC1" gate="A" pin="I1"/>
-<wire x1="8.89" y1="92.71" x2="52.07" y2="92.71" width="0.1524" layer="91"/>
+<wire x1="100.33" y1="92.71" x2="52.07" y2="92.71" width="0.1524" layer="91"/>
 <wire x1="52.07" y1="92.71" x2="52.07" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="MCU1" gate="1" pin="8"/>
 </segment>
 </net>
 <net name="N$9" class="0">
 <segment>
-<pinref part="MCU" gate="1" pin="9"/>
 <pinref part="IC2" gate="A" pin="I7"/>
-<wire x1="8.89" y1="95.25" x2="69.85" y2="95.25" width="0.1524" layer="91"/>
+<wire x1="100.33" y1="95.25" x2="69.85" y2="95.25" width="0.1524" layer="91"/>
 <wire x1="69.85" y1="95.25" x2="69.85" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="MCU1" gate="1" pin="9"/>
 </segment>
 </net>
 <net name="N$10" class="0">
 <segment>
-<pinref part="MCU" gate="1" pin="10"/>
 <pinref part="IC2" gate="A" pin="I6"/>
-<wire x1="8.89" y1="97.79" x2="72.39" y2="97.79" width="0.1524" layer="91"/>
+<wire x1="100.33" y1="97.79" x2="72.39" y2="97.79" width="0.1524" layer="91"/>
 <wire x1="72.39" y1="97.79" x2="72.39" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="MCU1" gate="1" pin="10"/>
 </segment>
 </net>
 <net name="N$11" class="0">
 <segment>
-<pinref part="MCU" gate="1" pin="11"/>
 <pinref part="IC2" gate="A" pin="I5"/>
-<wire x1="8.89" y1="100.33" x2="74.93" y2="100.33" width="0.1524" layer="91"/>
+<wire x1="100.33" y1="100.33" x2="74.93" y2="100.33" width="0.1524" layer="91"/>
 <wire x1="74.93" y1="100.33" x2="74.93" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="MCU1" gate="1" pin="11"/>
 </segment>
 </net>
 <net name="N$12" class="0">
 <segment>
-<pinref part="MCU" gate="1" pin="12"/>
 <pinref part="IC2" gate="A" pin="I4"/>
-<wire x1="8.89" y1="102.87" x2="77.47" y2="102.87" width="0.1524" layer="91"/>
+<wire x1="100.33" y1="102.87" x2="77.47" y2="102.87" width="0.1524" layer="91"/>
 <wire x1="77.47" y1="102.87" x2="77.47" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="MCU1" gate="1" pin="12"/>
 </segment>
 </net>
 <net name="N$13" class="0">
 <segment>
-<pinref part="MCU" gate="1" pin="13"/>
 <pinref part="IC2" gate="A" pin="I3"/>
-<wire x1="8.89" y1="105.41" x2="80.01" y2="105.41" width="0.1524" layer="91"/>
+<wire x1="100.33" y1="105.41" x2="80.01" y2="105.41" width="0.1524" layer="91"/>
 <wire x1="80.01" y1="105.41" x2="80.01" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="MCU1" gate="1" pin="13"/>
 </segment>
 </net>
 <net name="N$14" class="0">
 <segment>
-<pinref part="MCU" gate="1" pin="14"/>
 <pinref part="IC2" gate="A" pin="I2"/>
-<wire x1="8.89" y1="107.95" x2="82.55" y2="107.95" width="0.1524" layer="91"/>
+<wire x1="100.33" y1="107.95" x2="82.55" y2="107.95" width="0.1524" layer="91"/>
 <wire x1="82.55" y1="107.95" x2="82.55" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="MCU1" gate="1" pin="14"/>
 </segment>
 </net>
 <net name="N$15" class="0">
 <segment>
-<pinref part="MCU" gate="1" pin="15"/>
 <pinref part="IC2" gate="A" pin="I1"/>
-<wire x1="8.89" y1="110.49" x2="85.09" y2="110.49" width="0.1524" layer="91"/>
+<wire x1="100.33" y1="110.49" x2="85.09" y2="110.49" width="0.1524" layer="91"/>
 <wire x1="85.09" y1="110.49" x2="85.09" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="MCU1" gate="1" pin="15"/>
 </segment>
 </net>
 <net name="N$17" class="0">
 <segment>
 <pinref part="S_RST" gate="1" pin="P"/>
-<pinref part="MCU" gate="1" pin="18"/>
 <wire x1="30.48" y1="137.16" x2="30.48" y2="118.11" width="0.1524" layer="91"/>
-<wire x1="30.48" y1="118.11" x2="8.89" y2="118.11" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="118.11" x2="100.33" y2="118.11" width="0.1524" layer="91"/>
 <pinref part="S_RST" gate="1" pin="P1"/>
 <wire x1="30.48" y1="137.16" x2="33.02" y2="137.16" width="0.1524" layer="91"/>
 <junction x="30.48" y="137.16"/>
 <pinref part="R3" gate="G$1" pin="1"/>
 <wire x1="33.02" y1="137.16" x2="33.02" y2="134.62" width="0.1524" layer="91"/>
 <junction x="33.02" y="137.16"/>
+<pinref part="MCU1" gate="1" pin="18"/>
 </segment>
 </net>
 <net name="N$18" class="0">
 <segment>
 <pinref part="S_TEST" gate="1" pin="P"/>
-<pinref part="MCU" gate="1" pin="17"/>
 <wire x1="40.64" y1="137.16" x2="40.64" y2="115.57" width="0.1524" layer="91"/>
-<wire x1="40.64" y1="115.57" x2="8.89" y2="115.57" width="0.1524" layer="91"/>
+<wire x1="40.64" y1="115.57" x2="100.33" y2="115.57" width="0.1524" layer="91"/>
 <pinref part="S_TEST" gate="1" pin="P1"/>
 <wire x1="40.64" y1="137.16" x2="43.18" y2="137.16" width="0.1524" layer="91"/>
 <junction x="40.64" y="137.16"/>
 <pinref part="R1" gate="G$1" pin="1"/>
 <wire x1="43.18" y1="137.16" x2="43.18" y2="134.62" width="0.1524" layer="91"/>
 <junction x="43.18" y="137.16"/>
+<pinref part="MCU1" gate="1" pin="17"/>
 </segment>
 </net>
 <net name="N$19" class="0">
 <segment>
 <pinref part="S_FF" gate="1" pin="P"/>
-<pinref part="MCU" gate="1" pin="16"/>
 <wire x1="50.8" y1="137.16" x2="50.8" y2="113.03" width="0.1524" layer="91"/>
-<wire x1="50.8" y1="113.03" x2="8.89" y2="113.03" width="0.1524" layer="91"/>
+<wire x1="50.8" y1="113.03" x2="100.33" y2="113.03" width="0.1524" layer="91"/>
 <pinref part="S_FF" gate="1" pin="P1"/>
 <wire x1="53.34" y1="137.16" x2="50.8" y2="137.16" width="0.1524" layer="91"/>
 <junction x="50.8" y="137.16"/>
 <pinref part="R2" gate="G$1" pin="1"/>
 <wire x1="53.34" y1="134.62" x2="53.34" y2="137.16" width="0.1524" layer="91"/>
 <junction x="53.34" y="137.16"/>
+<pinref part="MCU1" gate="1" pin="16"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -6094,25 +6091,24 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <wire x1="67.31" y1="60.96" x2="67.31" y2="63.5" width="0.1524" layer="91"/>
 <wire x1="67.31" y1="63.5" x2="91.44" y2="63.5" width="0.1524" layer="91"/>
 <wire x1="91.44" y1="63.5" x2="91.44" y2="-5.08" width="0.1524" layer="91"/>
-<wire x1="91.44" y1="63.5" x2="91.44" y2="121.92" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="63.5" x2="91.44" y2="123.19" width="0.1524" layer="91"/>
 <junction x="91.44" y="63.5"/>
-<pinref part="SUPPLY2" gate="GND" pin="GND"/>
+<pinref part="SUPPLY2" gate="1" pin="GND"/>
 <junction x="90.17" y="-5.08"/>
 <pinref part="R1" gate="G$1" pin="2"/>
-<wire x1="43.18" y1="121.92" x2="53.34" y2="121.92" width="0.1524" layer="91"/>
-<wire x1="53.34" y1="121.92" x2="91.44" y2="121.92" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="124.46" x2="43.18" y2="121.92" width="0.1524" layer="91"/>
-<junction x="43.18" y="121.92"/>
+<wire x1="43.18" y1="123.19" x2="53.086" y2="123.19" width="0.1524" layer="91"/>
+<wire x1="53.086" y1="123.19" x2="91.44" y2="123.19" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="124.46" x2="43.18" y2="123.19" width="0.1524" layer="91"/>
+<junction x="43.18" y="123.19"/>
 <pinref part="R2" gate="G$1" pin="2"/>
-<wire x1="53.34" y1="124.46" x2="53.34" y2="121.92" width="0.1524" layer="91"/>
-<junction x="53.34" y="121.92"/>
-<pinref part="MCU" gate="1" pin="20"/>
-<wire x1="8.89" y1="123.19" x2="8.89" y2="121.92" width="0.1524" layer="91"/>
-<wire x1="8.89" y1="121.92" x2="33.02" y2="121.92" width="0.1524" layer="91"/>
+<wire x1="53.34" y1="124.46" x2="53.086" y2="123.19" width="0.1524" layer="91"/>
+<junction x="53.086" y="123.19"/>
 <pinref part="R3" gate="G$1" pin="2"/>
-<wire x1="33.02" y1="121.92" x2="43.18" y2="121.92" width="0.1524" layer="91"/>
-<wire x1="33.02" y1="124.46" x2="33.02" y2="121.92" width="0.1524" layer="91"/>
-<junction x="33.02" y="121.92"/>
+<wire x1="33.02" y1="123.19" x2="43.18" y2="123.19" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="124.46" x2="33.02" y2="123.19" width="0.1524" layer="91"/>
+<pinref part="MCU1" gate="1" pin="20"/>
+<wire x1="100.33" y1="123.19" x2="91.44" y2="123.19" width="0.1524" layer="91"/>
+<junction x="91.44" y="123.19"/>
 </segment>
 </net>
 <net name="N$16" class="0">
@@ -6227,6 +6223,30 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <wire x1="77.47" y1="-106.68" x2="77.47" y2="-20.32" width="0.1524" layer="91"/>
 </segment>
 </net>
+<net name="VCC" class="0">
+<segment>
+<pinref part="RN1" gate="1" pin="1"/>
+<wire x1="27.94" y1="-13.208" x2="27.94" y2="-20.32" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="-20.32" x2="27.94" y2="-20.32" width="0.1524" layer="91"/>
+<pinref part="RN2" gate="1" pin="1"/>
+<wire x1="33.02" y1="-66.04" x2="27.94" y2="-66.04" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="-66.04" x2="27.94" y2="-20.32" width="0.1524" layer="91"/>
+<junction x="27.94" y="-20.32"/>
+<pinref part="LEDS" gate="1" pin="30"/>
+<wire x1="80.01" y1="-20.32" x2="80.01" y2="-109.22" width="0.1524" layer="91"/>
+<wire x1="80.01" y1="-109.22" x2="27.94" y2="-109.22" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="-109.22" x2="27.94" y2="-66.04" width="0.1524" layer="91"/>
+<junction x="27.94" y="-66.04"/>
+<pinref part="SUPPLY1" gate="G$1" pin="VCC"/>
+</segment>
+<segment>
+<pinref part="MCU1" gate="1" pin="1"/>
+<wire x1="100.33" y1="74.93" x2="100.33" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="100.33" y1="66.04" x2="115.57" y2="66.04" width="0.1524" layer="91"/>
+<pinref part="SUPPLY3" gate="G$1" pin="VCC"/>
+<wire x1="115.57" y1="66.04" x2="115.57" y2="74.93" width="0.1524" layer="91"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>
@@ -6253,10 +6273,10 @@ with devices in libraries, schematics, and board files. Those 3D
 packages will not be understood (or retained) with this version.
 </note>
 <note version="8.4" severity="warning">
-Since Version 8.4, EAGLE supports properties for SPICE simulation.
+Since Version 8.4, EAGLE supports properties for SPICE simulation. 
 Probes in schematics and SPICE mapping objects found in parts and library devices
 will not be understood with this version. Update EAGLE to the latest version
-for full support of SPICE simulation.
+for full support of SPICE simulation. 
 </note>
 </compatibility>
 </eagle>
