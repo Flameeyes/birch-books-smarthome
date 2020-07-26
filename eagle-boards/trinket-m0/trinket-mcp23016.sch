@@ -6577,13 +6577,6 @@ Metric Code Size 4564</description>
 <packageinstance name="C2225K"/>
 </packageinstances>
 </package3d>
-<package3d name="HPC0201" urn="urn:adsk.eagle:package:26213/1" type="box" library_version="11">
-<description>
-Source: http://www.vishay.com/docs/10129/hpc0201a.pdf</description>
-<packageinstances>
-<packageinstance name="HPC0201"/>
-</packageinstances>
-</package3d>
 <package3d name="C0201" urn="urn:adsk.eagle:package:23690/2" type="model" library_version="11">
 <description>Source: http://www.avxcorp.com/docs/catalogs/cx5r.pdf</description>
 <packageinstances>
@@ -6608,6 +6601,13 @@ Source: AVX .. aphvc.pdf</description>
 <description>CAPACITOR</description>
 <packageinstances>
 <packageinstance name="C01005"/>
+</packageinstances>
+</package3d>
+<package3d name="HPC0201" urn="urn:adsk.eagle:package:26213/1" type="box" library_version="11">
+<description> 
+Source: http://www.vishay.com/docs/10129/hpc0201a.pdf</description>
+<packageinstances>
+<packageinstance name="HPC0201"/>
 </packageinstances>
 </package3d>
 </packages3d>
@@ -9258,7 +9258,7 @@ Source: AVX .. aphvc.pdf</description>
 <part name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="1k"/>
 <part name="+3V4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="R4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="3.9k"/>
-<part name="C1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="025-030X050" package3d_urn="urn:adsk.eagle:package:23631/1" value="33pF"/>
+<part name="C1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="025-025X050" package3d_urn="urn:adsk.eagle:package:23629/2" value="33pF"/>
 </parts>
 <sheets>
 <sheet>
