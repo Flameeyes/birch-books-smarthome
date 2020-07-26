@@ -6,6 +6,9 @@ SPDX-License-Identifier: MIT
 
 # Birch Books Smart Home
 
+![https://live.staticflickr.com/65535/49891973962_5adf0ecabe_5k.jpg](Lighting up the 
+scene)
+
 This repository contains code, schematics, documentation and notes to implement a
 MCU-controlled LED lights system for the [LEGO Creator Bookshop
 set](https://www.lego.com/en-gb/product/bookshop-10270) (10270).
@@ -13,6 +16,9 @@ set](https://www.lego.com/en-gb/product/bookshop-10270) (10270).
 ## Further References
 
 Refer to my [blog posts](https://flameeyes.blog/tag/birch-books/) for details.
+
+You can see some pictures of the results on [my Flickr
+album](https://www.flickr.com/photos/flameeyes/albums/72157714292772872).
 
 ## License
 

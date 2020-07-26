@@ -20,8 +20,9 @@ designs as well.
 The actuation board is as simple as it can be:
 
   * 3× pushbuttons (`RST`, `TEST`, `FF`);
+  * 3× 1kΩ resistors for pull-down;
   * 2× ULN2003AD Darlington Array;
-  * 14× 47Ω resistors, or 2× bussed 7-port resistor networks.
+  * 14× 47Ω resistors, or 2× bussed 7-port resistor networks, for the LEDs.
 
 Two connectors are also present: a 1x20, breadboard compatible header to connect to the
 controller board, and a 2×15 connector to connect to the LEDs.
@@ -35,8 +36,47 @@ controller board, and a 2×15 connector to connect to the LEDs.
 |   16   | FF input (HIGH is ON)   |
 |   17   | TEST input (HIGH is ON) |
 |   18   | RST input (HIGH is ON)  |
-|   19   | Vcc (logic HIGH)        |
+|   19   | VIO (logic HIGH)        |
 |   20   | GND                     |
 
-Note that the connector has both a fixed +5V and a Vcc, to allow controller boards using
-+3.3V CMOS levels.
+Note that the connector has both a fixed +5V and a VIO, to allow controller boards using
++3.3V CMOS levels for input/output.
+
+As the board was originally designed for 8051 MCUs, the RST line is *active HIGH*, which
+is unusual. To connect it to an active-low RST pin, consider using a NPN transistor.
+
+## Controller Boards
+
+Multiple controller boards are present in this repository, with different level of test.
+
+### 8051/8052 (Partly Tested)
+
+This is the original controller board. It was designed with an STC89C52 MCU in mind (a
+modern 8052 implementation), and as such it has the UART marked as `ISP_STC` on board
+itself.
+
+It includes an optionally-populated CP2104 USB-to-UART chip (and related passives) to
+make the programming easier. But it has not been tested since I failed to program a new
+chip with the correct firmware.
+
+The firmware for this board is in `8051/`.
+
+### Trinket M0 with MCP23016/17 (In Use)
+
+This version of the controller is designed to work with an [Adafruit Trinket
+M0](https://www.adafruit.com/product/3500) board on top.
+
+There are two separate boards in the directory, which are based around the same design 
+and firmware, but with different GPIO Expanders on them. It's recommended to use the 
+**MCP23017** version, which has two fewer components and is more reliable.
+
+Both boards have marking and can be technically adapted to use any MCU that supports I²C
+and has drivers for the MCP23016/17 series adapters. The needed lines are +5V, VIO (e.g.
+3.3V), GND, SDA, SCL, ¬RST.
+
+The firmware for this board is in `circuitpython/`.
+
+### ATmega48 (Not Tested)
+
+This version of the controller is experimental and untested. The intention is to provide
+an alternative self-contained controller board without using a complex daughterboard.
