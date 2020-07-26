@@ -79,26 +79,27 @@
 <wire x1="53.65" y1="33.96" x2="0" y2="33.96" width="0" layer="20"/>
 <wire x1="0" y1="33.96" x2="0" y2="0" width="0" layer="20"/>
 <dimension x1="19.05" y1="7.62" x2="31.75" y2="7.62" x3="25.4" y3="-2.54" textsize="1.778" layer="51"/>
-<text x="34.29" y="24.13" size="1.016" layer="22" rot="MR180">Birch Books Smart Home
+<text x="52.07" y="19.05" size="1.016" layer="22" font="vector" rot="MR0">Birch Books Smart Home
 Controller Module
 Trinket M0 MCP23016 rev. 1b</text>
-<text x="33.02" y="12.7" size="1.016" layer="22" rot="MR180">Copyright © 2020 D. E. Pettenò
+<text x="52.07" y="6.35" size="0.8128" layer="22" font="vector" rot="MR0">Copyright © 2020 D. E. Pettenò
 flameeyes.com/p/birch-books
+
 Licensed under MIT License</text>
 <wire x1="17.78" y1="13.97" x2="22.86" y2="13.97" width="0.1524" layer="21"/>
 <wire x1="22.86" y1="13.97" x2="24.13" y2="12.7" width="0.1524" layer="21"/>
 <wire x1="24.13" y1="12.7" x2="25.4" y2="12.7" width="0.1524" layer="21"/>
 <wire x1="25.4" y1="12.7" x2="26.67" y2="13.97" width="0.1524" layer="21"/>
 <wire x1="26.67" y1="13.97" x2="33.02" y2="13.97" width="0.1524" layer="21"/>
-<text x="20.32" y="11.43" size="0.8128" layer="21" rot="R270">SCL</text>
-<text x="20.32" y="6.35" size="0.8128" layer="21" rot="R270">SDA</text>
-<text x="20.32" y="13.97" size="0.8128" layer="21" rot="R270">VIO</text>
-<text x="20.32" y="3.81" size="0.8128" layer="21" rot="R270">5V</text>
-<text x="30.48" y="3.81" size="0.8128" layer="21" rot="R90">GND</text>
-<text x="30.48" y="11.43" size="0.8128" layer="21" rot="R90">!RST</text>
 <wire x1="17.78" y1="13.97" x2="17.78" y2="1.27" width="0.1524" layer="21"/>
 <wire x1="17.78" y1="1.27" x2="33.02" y2="1.27" width="0.1524" layer="21"/>
 <wire x1="33.02" y1="1.27" x2="33.02" y2="13.97" width="0.1524" layer="21"/>
+<text x="21.59" y="10.16" size="0.8128" layer="21" font="vector">SCL</text>
+<text x="21.59" y="5.08" size="0.8128" layer="21" font="vector">SDA</text>
+<text x="21.59" y="12.7" size="0.8128" layer="21" font="vector">VIO</text>
+<text x="21.59" y="2.54" size="0.8128" layer="21" font="vector">5V</text>
+<text x="27.94" y="5.08" size="0.8128" layer="21" font="vector">GND</text>
+<text x="27.94" y="12.7" size="0.8128" layer="21" font="vector">!RST</text>
 </plain>
 <libraries>
 <library name="microchip-dspic">
