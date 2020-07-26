@@ -66,8 +66,8 @@ The firmware for this board is in `8051/`.
 This version of the controller is designed to work with an [Adafruit Trinket
 M0](https://www.adafruit.com/product/3500) board on top.
 
-There are two separate boards in the directory, which are based around the same design 
-and firmware, but with different GPIO Expanders on them. It's recommended to use the 
+There are two separate boards in the directory, which are based around the same design
+and firmware, but with different GPIO Expanders on them. It's recommended to use the
 **MCP23017** version, which has two fewer components and is more reliable.
 
 Both boards have marking and can be technically adapted to use any MCU that supports I²C
