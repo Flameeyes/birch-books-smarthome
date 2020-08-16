@@ -36,17 +36,15 @@ def write_gp(value):
     mcp.gpio = value & 0x3FFF
 
 
-while ff_pin.value:
+# Run a LED self-test at start, for just a second.
+write_gp(0x3FFF)
+time.sleep(1)
+
+while test_pin.value:
     print("Entering on-reset test loop.")
     clock_secs = int(time.monotonic())
 
-    if test_pin.value:
-        write_gp(schedule.TEST_SCHEDULE[clock_secs % 10])
-    else:
-        if clock_secs % 2:
-            write_gp(0x5555)
-        else:
-            write_gp(0xAAAA)
+    write_gp(schedule.TEST_SCHEDULE[clock_secs % 10])
     time.sleep(0)
 
 test_mode = False
