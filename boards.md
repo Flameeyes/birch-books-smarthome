@@ -76,7 +76,28 @@ and has drivers for the MCP23016/17 series adapters. The needed lines are +5V, V
 
 The firmware for this board is in `circuitpython/`.
 
-### ATmega48 (Not Tested)
+### ATmega48
 
-This version of the controller is experimental and untested. The intention is to provide
-an alternative self-contained controller board without using a complex daughterboard.
+This version of the controller is designed to work with
+[ATmega48](https://www.microchip.com/wwwproducts/en/ATmega48) and
+[ATmega328](https://www.microchip.com/wwwproducts/en/ATmega328) (the latter untested).
+
+This board is a compromise between the 8051 and Trinket M0 options: it include a simple
+8-bit MCU, requiring no passive components, but also an inverter for the RST line.
+
+The ISP header should be compatible with many ATmega programmers, as it exposes the SPI
+bus together with the reset and power lines, and is configured as follows:
+
+| Pin | Description |
+| --- | ----------- |
+|  1  |     SIO     |
+|  2  |     +5V     |
+|  3  |     SCK     |
+|  4  |     SDO     |
+|  5  |     RST     |
+|  6  |     GND     |
+
+Note that there is no CS line.
+
+The firmware for this board is in `atmega48/` and should be **source** compatible with
+ATmega328, but might require Makefile changes.
