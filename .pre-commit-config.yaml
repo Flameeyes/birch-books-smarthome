@@ -10,7 +10,7 @@ repos:
     -   id: check-yaml
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
-    exclude: ^eagle-boards/.*$
+        exclude: ^eagle-boards/.*$
 -   repo: https://github.com/fsfe/reuse-tool
     rev: latest
     hooks:
