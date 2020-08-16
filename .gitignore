@@ -2,13 +2,11 @@
 #
 # SPDX-License-Identifier: MIT
 
+*.ihx
+*.zip
 *~
-/eagle-boards/**/*.b#*
-/eagle-boards/**/*.pro
-/eagle-boards/**/*.s#*
-/eagle-boards/**/*~renumsch.scr
+/.vscode
 /8051/*.asm
-/8051/*.ihx
 /8051/*.lk
 /8051/*.lst
 /8051/*.map
@@ -16,6 +14,8 @@
 /8051/*.rel
 /8051/*.rst
 /8051/*.sym
-*.zip
+/eagle-boards/**/*.b#*
+/eagle-boards/**/*.pro
+/eagle-boards/**/*.s#*
+/eagle-boards/**/*~renumsch.scr
 /venv
-/.vscode
