@@ -109,30 +109,16 @@ void main(void) {
   P1 = 0x00;
   P2 = 0x00;
 
-  /* If FF is pressed at start, consider us in 'self-test mode'.
-   *
-   * Two self-test mode are implemented:
-   *
-   *  - If TEST is also pressed, chase a single room through the output port.
-   *  - Otherwise strobe a "knuckle pattern" on the two ports.
+  /* If TEST is pressed at start, consider us in 'self-test mode': chase a
+   * single room through the output port.
    */
-  while (FF_PRESSED) {
+  while (TEST_PRESSED) {
     rsttestmode = true;
     uint16_t clock_secs = ticks() >> 4;
-    if (TEST_PRESSED) {
-      uint8_t test_index = clock_secs % 10;
+    uint8_t test_index = clock_secs % 10;
 
-      P0 = test_schedule[test_index] & 0xFF;
-      P2 = test_schedule[test_index] >> 8;
-    } else {
-      if (clock_secs & 0x01) {
-        P0 = 0x55;
-        P2 = 0xAA & CFG_P2OUT;
-      } else {
-        P0 = 0xAA;
-        P2 = 0x55 & CFG_P2OUT;
-      }
-    }
+    P0 = test_schedule[test_index] & 0xFF;
+    P2 = test_schedule[test_index] >> 8;
   }
 
   /* This is the main loop for the firmware.
