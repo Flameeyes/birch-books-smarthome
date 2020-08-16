@@ -25,3 +25,7 @@ repos:
     rev: 19.10b0
     hooks:
     - id: black
+-   repo: https://github.com/doublify/pre-commit-clang-format
+    rev: master
+    hooks:
+    -   id: clang-format
